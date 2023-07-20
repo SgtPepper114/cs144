@@ -12,6 +12,12 @@ class ByteStream
 {
 protected:
   uint64_t capacity_;
+  std::queue<char> buffer_ = std::queue<char>();
+  std::string first_char_ = std::string();
+  bool f_close_ = false;
+  bool f_error_ = false;
+  uint64_t total_pushed_ = 0;
+  uint64_t total_poped_ = 0;
   // Please add any additional state to the ByteStream here, and not to the Writer and Reader interfaces.
 
 public:
