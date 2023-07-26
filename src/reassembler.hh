@@ -2,10 +2,20 @@
 
 #include "byte_stream.hh"
 
+#include <cmath>
+#include <iostream>
+#include <list>
 #include <string>
+#include <utility>
 
 class Reassembler
 {
+private:
+  uint64_t bytes_pending_ = 0;
+  uint64_t now_index_ = 0;
+  bool received_last_ = false;
+  std::list<std::pair<uint64_t, std::string>> buffer_ = std::list<std::pair<uint64_t, std::string>>();
+
 public:
   /*
    * Insert a new substring to be reassembled into a ByteStream.
