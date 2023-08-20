@@ -52,6 +52,11 @@ string_view Reader::peek() const
   return string_view( first_char_ );
 }
 
+bool Reader::is_empty() const
+{
+  return buffer_.empty();
+}
+
 bool Reader::is_finished() const
 {
   return f_close_ && buffer_.empty();
