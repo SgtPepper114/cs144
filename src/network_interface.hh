@@ -4,6 +4,7 @@
 #include "ethernet_frame.hh"
 #include "ipv4_datagram.hh"
 
+#include <deque>
 #include <iostream>
 #include <list>
 #include <optional>
@@ -40,6 +41,11 @@ private:
 
   // IP (known as Internet-layer or network-layer) address of the interface
   Address ip_address_;
+
+  size_t timer_ { 0 };
+  std::unordered_map<uint32_t, std::pair<EthernetAddress, size_t>> ip2eth_ {};
+  std::unordered_map<uint32_t, std::pair<std::queue<EthernetFrame>, size_t>> wait4arp_ {};
+  std::deque<EthernetFrame> wait2send_ {};
 
 public:
   // Construct a network interface with given Ethernet (network-access-layer) and IP (internet-layer)

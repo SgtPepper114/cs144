@@ -2,6 +2,7 @@
 
 #include "network_interface.hh"
 
+#include <memory>
 #include <optional>
 #include <queue>
 
@@ -54,11 +55,21 @@ class Router
 {
   // The router's collection of network interfaces
   std::vector<AsyncNetworkInterface> interfaces_ {};
+  struct TrieNode
+  {
+    std::optional<Address> next_hop {};
+    std::optional<size_t> interface_num {};
+    std::shared_ptr<TrieNode> zero = nullptr;
+    std::shared_ptr<TrieNode> one = nullptr;
+  };
+  std::shared_ptr<TrieNode> router_;
 
 public:
   // Add an interface to the router
   // interface: an already-constructed network interface
   // returns the index of the interface after it has been added to the router
+  Router() : router_( new TrieNode ) {}
+
   size_t add_interface( AsyncNetworkInterface&& interface )
   {
     interfaces_.push_back( std::move( interface ) );
